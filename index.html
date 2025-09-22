@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paliers Gamerscore Xbox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --xbox-green: #10B981;
+            --glow-color: rgba(16, 185, 129, 0.7);
+        }
+
+        @keyframes background-pan {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn-on-scroll {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        @keyframes grid-pulse {
+            0%, 100% { opacity: 0.05; }
+            50% { opacity: 0.1; }
+        }
+        
+        @keyframes text-shine {
+            to { background-position: 200% center; }
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #050608;
+            color: #e5e7eb;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(160, 80%, 40%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 90% 10%, hsla(280, 70%, 50%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, hsla(210, 80%, 60%, 0.15) 0px, transparent 50%);
+            background-size: 200% 200%;
+            animation: background-pan 25s linear infinite;
+            overflow-x: hidden;
+        }
+
+        .background-layers {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+        }
+        .grid-layer {
+            background-image: radial-gradient(rgba(200, 200, 200, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: grid-pulse 10s ease-in-out infinite;
+        }
+        .circuit-layer {
+            background-image: url('https://www.transparenttextures.com/patterns/circuit-board.png');
+            opacity: 0.03;
+        }
+
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+
+        .title-glow {
+            background: linear-gradient(90deg, #fff, #a7f3d0, #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: text-shine 5s linear infinite;
+            text-shadow: 0 0 15px var(--glow-color);
+        }
+
+        .card-container {
+            position: relative;
+            perspective: 1000px;
+            opacity: 0;
+            transform: translateY(40px);
+            will-change: transform, opacity;
+        }
+        .card-container.is-visible {
+            animation: fadeIn-on-scroll 0.6s ease-out forwards;
+        }
+
+        .card-wrapper {
+            position: relative;
+            padding: 1px;
+            border-radius: 0;
+            overflow: hidden;
+            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transform-style: preserve-3d;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+        }
+
+        .card-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: conic-gradient(from 180deg at 50% 50%, #22c55e, #84cc16, #a3e635, #34d399, #22c55e);
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+            animation: rotate-border 4s linear infinite;
+        }
+        
+        .card-container:hover .card-wrapper::before { opacity: 1; }
+
+        .card-content {
+            background: rgba(10, 10, 12, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(55, 65, 81, 0.2);
+            height: 100%;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 1;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .header-icon-container {
+            transition: transform 0.3s ease;
+        }
+        .header-icon-container:hover {
+            transform: scale(1.1) rotate(-5deg);
+        }
+    </style>
+</head>
+<body class="text-gray-200">
+    <div class="background-layers">
+        <div class="absolute inset-0 grid-layer"></div>
+        <div class="absolute inset-0 circuit-layer"></div>
+    </div>
+
+    <div class="container mx-auto px-4 py-12 md:py-20">
+        <header class="text-center mb-16 md:mb-24">
+            <div class="inline-block p-4 rounded-full bg-gray-900/50 border border-gray-700 mb-6 header-icon-container">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-green-400" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                   <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                   <path d="M8 21l8 0"></path>
+                   <path d="M12 17l0 4"></path>
+                   <path d="M7 4l10 0"></path>
+                   <path d="M17 4v8a5 5 0 0 1 -10 0v-8"></path>
+                   <path d="M5 9l-2 0"></path>
+                   <path d="M19 9l2 0"></path>
+                </svg>
+            </div>
+            <h1 class="font-orbitron text-4xl md:text-6xl font-bold text-white title-glow tracking-wider">NEXUS GAMERSCORE : LE PANTHÉON XBOX</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-400 max-w-3xl mx-auto">Chaque succès est une étape. Découvrez votre rang dans l'univers Xbox et mesurez votre dévouement.</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div class="card-container" style="--delay: 0.1s;">
+                <div class="card-wrapper">
+                    <div class="card-content flex flex-col items-center text-center">
+                        <div class="mb-5 text-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                        <h2 class="font-orbitron text-2xl font-bold text-green-400 mb-2">Recrue Numérique</h2>
+                        <p class="font-semibold text-lg text-white mb-4">0 - 9,999 G</p>
+                        <p class="text-gray-400">Le voyage commence. Chaque nouveau jeu est une porte vers l'inconnu, chaque succès une première victoire.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-container" style="--delay: 0.2s;">
+                 <div class="card-wrapper">
+                    <div class="card-content flex flex-col items-center text-center">
+                        <div class="mb-5 text-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg></div>
+                        <h2 class="font-orbitron text-2xl font-bold text-green-400 mb-2">Chasseur de Succès</h2>
+                        <p class="font-semibold text-lg text-white mb-4">10,000 - 49,999 G</p>
+                        <p class="text-gray-400">Le son du déverrouillage est devenu une douce mélodie. Vous explorez les jeux à la recherche de défis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-container" style="--delay: 0.3s;">
+                <div class="card-wrapper">
+                    <div class="card-content flex flex-col items-center text-center">
+                        <div class="mb-5 text-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+                        <h2 class="font-orbitron text-2xl font-bold text-green-400 mb-2">Virtuose du Pad</h2>
+                        <p class="font-semibold text-lg text-white mb-4">50,000 - 99,999 G</p>
+                        <p class="text-gray-400">La manette est le prolongement de votre volonté. Vos réflexes sont affûtés, votre connaissance est profonde.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-container" style="--delay: 0.4s;">
+                <div class="card-wrapper">
+                    <div class="card-content flex flex-col items-center text-center">
+                        <div class="mb-5 text-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg></div>
+                        <h2 class="font-orbitron text-2xl font-bold text-green-400 mb-2">Élite du Réseau</h2>
+                        <p class="font-semibold text-lg text-white mb-4">100,000 - 249,999 G</p>
+                        <p class="text-gray-400">Le cap symbolique des 100k est franchi. Votre Gamertag est connu et respecté.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-container" style="--delay: 0.5s;">
+                <div class="card-wrapper">
+                    <div class="card-content flex flex-col items-center text-center">
+                        <div class="mb-5 text-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v.01M12 6a2 2 0 100-4 2 2 0 000 4zm0 12a2 2 0 100 4 2 2 0 000-4zm0 0a2 2 0 100 4 2 2 0 000-4z" /></svg></div>
+                        <h2 class="font-orbitron text-2xl font-bold text-green-400 mb-2">Légende Vivante</h2>
+                        <p class="font-semibold text-lg text-white mb-4">250,000 - 499,999 G</p>
+                        <p class="text-gray-400">Votre persévérance est légendaire. Vous laissez une empreinte durable dans chaque univers virtuel.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-container" style="--delay: 0.6s;">
+                <div class="card-wrapper">
+                    <div class="card-content flex flex-col items-center text-center">
+                        <div class="mb-5 text-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 1.01L3 5l9 4 9-4-9-3.99z"/><path stroke-linecap="round" stroke-linejoin="round" d="M3 14l9 4 9-4"/><path stroke-linecap="round" stroke-linejoin="round" d="M3 9l9 4 9-4"/></svg></div>
+                        <h2 class="font-orbitron text-2xl font-bold text-green-400 mb-2">Titan du Gamerscore</h2>
+                        <p class="font-semibold text-lg text-white mb-4">500,000 - 999,999 G</p>
+                        <p class="text-gray-400">Vous appartenez à une caste de joueurs rares. Le demi-million de G est un monument à votre passion.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-container md:col-span-2 lg:col-span-1 lg:col-start-2" style="--delay: 0.7s;">
+                <div class="card-wrapper">
+                    <div class="card-content flex flex-col items-center text-center">
+                        <div class="mb-5 text-green-400"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2z"></path><path d="M16.24 7.76l-2.12 6.36-6.36 2.12 2.12-6.36 6.36-2.12z"></path></svg></div>
+                        <h2 class="font-orbitron text-2xl font-bold text-green-400 mb-2">Entité Cosmique</h2>
+                        <p class="font-semibold text-lg text-white mb-4">1,000,000+ G</p>
+                        <p class="text-gray-400">Vous avez transcendé le statut de simple joueur. Vous êtes au cœur de l'écosystème Xbox.</p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <footer class="text-center mt-20 md:mt-24 border-t border-gray-800/50 pt-10">
+            <p class="text-gray-500">Créé avec passion pour la communauté Xbox.</p>
+            <p class="text-sm text-gray-600 mt-2">Ce site n'est pas affilié à Microsoft ou Xbox.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Animation au défilement
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        entry.target.style.animationDelay = entry.target.dataset.delay;
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            const cards = document.querySelectorAll('.card-container');
+            cards.forEach((card, index) => {
+                card.style.setProperty('--delay', `${index * 100}ms`);
+                observer.observe(card);
+            });
+
+            // Effet 3D au survol
+            cards.forEach(card => {
+                const cardWrapper = card.querySelector('.card-wrapper');
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = (y - centerY) / 15;
+                    const rotateY = (centerX - x) / 15;
+
+                    requestAnimationFrame(() => {
+                        cardWrapper.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                    });
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    requestAnimationFrame(() => {
+                        cardWrapper.style.transform = 'rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
