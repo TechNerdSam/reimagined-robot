@@ -1,1924 +1,590 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <title>Xbox Elite 1% – Classement Mondial 2025</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Xbox Elite 1% | Leaderboard Quantique</title>
+    
+    <!-- Fonts: Rajdhani (Tech/Gaming) & Inter (UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS (Design System) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Police moderne -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Rajdhani', 'sans-serif'],
+                    },
+                    colors: {
+                        xbox: {
+                            DEFAULT: '#107C10',
+                            light: '#25cf25',
+                            dark: '#0b520b',
+                            neon: '#9bf00b'
+                        },
+                        dark: {
+                            900: '#050505',
+                            800: '#0a0a0a',
+                            700: '#121212',
+                            glass: 'rgba(20, 20, 20, 0.7)'
+                        }
+                    },
+                    backgroundImage: {
+                        'grid-pattern': "linear-gradient(to right, #1f1f1f 1px, transparent 1px), linear-gradient(to bottom, #1f1f1f 1px, transparent 1px)",
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        glow: {
+                            'from': { boxShadow: '0 0 10px -10px #9bf00b' },
+                            'to': { boxShadow: '0 0 20px 5px rgba(155, 240, 11, 0.2)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        :root {
-            --bg-main: #02060a;
-            --bg-elevated: rgba(10, 18, 28, 0.88);
-            --bg-elevated-soft: rgba(8, 14, 24, 0.7);
-            --accent: #9bf00b;
-            --accent-soft: rgba(155, 240, 11, 0.15);
-            --accent-strong: #c8ff4e;
-            --xbox: #107c10;
-            --text: #f5f7fb;
-            --text-muted: #9da3b5;
-            --border-subtle: rgba(255,255,255,0.08);
-            --danger: #ff4f7b;
-            --gold: #ffd700;
-            --silver: #c0c0c0;
-            --bronze: #cd7f32;
-            --radius-lg: 24px;
-            --radius-md: 18px;
-            --radius-pill: 999px;
-            --blur-strong: 26px;
-            --transition-fast: 0.18s ease-out;
-            --transition-med: 0.26s ease-out;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-        }
-
+        /* Custom Utilities */
         body {
-            font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-            background: radial-gradient(circle at top left, #07210b 0, #02060a 42%, #02020a 100%);
-            color: var(--text);
+            background-color: #020202;
+            color: #ffffff;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
-
-        /* ====== BACKGROUND FX ====== */
-
-        .bg-orbit {
-            position: fixed;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: -2;
-        }
-
-        .bg-orbit::before,
-        .bg-orbit::after {
-            content: "";
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.75;
-            mix-blend-mode: screen;
-        }
-
-        .bg-orbit::before {
-            width: 520px;
-            height: 520px;
-            background: radial-gradient(circle, rgba(16,124,16,0.9), transparent 70%);
-            top: -120px;
-            left: -80px;
-            animation: float-orbit 22s infinite alternate ease-in-out;
-        }
-
-        .bg-orbit::after {
-            width: 520px;
-            height: 520px;
-            background: radial-gradient(circle, rgba(0,255,160,0.6), transparent 70%);
-            bottom: -140px;
-            right: -40px;
-            animation: float-orbit 26s infinite alternate ease-in-out;
-        }
-
-        @keyframes float-orbit {
-            from { transform: translate3d(0, 0, 0) scale(1); }
-            to   { transform: translate3d(40px, -20px, 0) scale(1.08); }
-        }
-
-        .bg-grid {
-            position: fixed;
-            inset: 0;
-            background-image:
-                radial-gradient(circle at 0 0, rgba(255,255,255,0.18) 0, transparent 60px),
-                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-            background-size: auto, 120px 120px, 120px 120px;
-            opacity: 0.4;
-            mask-image: radial-gradient(circle at top, black 30%, transparent 75%);
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        /* ====== LAYOUT GENERAL ====== */
-
-        .page {
-            max-width: 1320px;
-            margin: 0 auto;
-            padding: 20px clamp(18px, 4vw, 32px) 48px;
-        }
-
-        /* ====== TOP NAV ====== */
-
-        .top-nav {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 18px;
-            border-radius: 999px;
-            background: radial-gradient(circle at top left, rgba(155,240,11,0.16), transparent 60%),
-                        rgba(5, 10, 18, 0.80);
-            border: 1px solid rgba(155,240,11,0.34);
-            box-shadow:
-                0 0 0 1px rgba(0,0,0,0.6),
-                0 22px 60px rgba(0,0,0,0.85),
-                0 0 50px rgba(155,240,11,0.25);
-            backdrop-filter: blur(24px);
-            position: sticky;
-            top: 14px;
-            z-index: 10;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .brand-mark {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: 2px solid rgba(155,240,11,0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background:
-                radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35), transparent 55%),
-                conic-gradient(from 180deg, #9bf00b, #107c10, #00ffc2, #9bf00b);
-            box-shadow:
-                0 0 22px rgba(155,240,11,0.85),
-                inset 0 0 10px rgba(0,0,0,0.7);
-        }
-
-        .brand-mark span {
-            font-size: 19px;
-            font-weight: 800;
-            color: #02060a;
-            text-shadow: 0 0 10px rgba(255,255,255,0.8);
-        }
-
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-            line-height: 1.1;
-        }
-
-        .brand-title {
-            font-size: 15px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-
-        .brand-sub {
-            font-size: 12px;
-            color: rgba(155,240,11,0.8);
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .nav-chip {
-            padding: 8px 14px;
-            border-radius: 999px;
-            font-size: 13px;
-            color: var(--text-muted);
-            border: 1px solid transparent;
-            background: radial-gradient(circle at top, rgba(255,255,255,0.04), transparent 60%);
-            cursor: pointer;
-            transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
-        }
-
-        .nav-chip:hover {
-            color: var(--text);
-            border-color: rgba(155,240,11,0.5);
-            transform: translateY(-1px);
-        }
-
-        .nav-chip--active {
-            border-color: rgba(155,240,11,0.9);
-            background: radial-gradient(circle at top, rgba(155,240,11,0.26), transparent 65%);
-            color: var(--accent-strong);
-            box-shadow: 0 0 18px rgba(155,240,11,0.6);
-        }
-
-        .pill-divider {
-            width: 1px;
-            height: 26px;
-            background: radial-gradient(circle, rgba(255,255,255,0.38), transparent 70%);
-            opacity: 0.6;
-        }
-
-        .theme-toggle {
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 9px;
-            border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.16);
-            background: radial-gradient(circle at top, rgba(255,255,255,0.09), rgba(9,17,25,0.82));
-            cursor: pointer;
-            font-size: 11px;
-            color: var(--text-muted);
-            transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast), transform var(--transition-fast);
-        }
-
-        .theme-toggle:hover {
-            border-color: rgba(155,240,11,0.7);
-            box-shadow: 0 0 22px rgba(155,240,11,0.4);
-            transform: translateY(-1px);
-        }
-
-        .theme-toggle-knob {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #ffffff, #d7f59f);
-            box-shadow:
-                0 0 0 2px rgba(155,240,11,0.7),
-                0 0 18px rgba(155,240,11,0.8);
-        }
-
-        .theme-toggle span {
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-        }
-
-        /* ====== HERO ====== */
-
-        .hero {
-            margin-top: 28px;
-            margin-bottom: 26px;
-            display: grid;
-            grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr);
-            gap: 22px;
-            align-items: stretch;
-        }
-
-        .hero-primary {
-            border-radius: var(--radius-lg);
-            padding: 26px 26px 24px;
-            background:
-                radial-gradient(circle at 0 0, rgba(155,240,11,0.2), transparent 60%),
-                radial-gradient(circle at 100% 0, rgba(0,255,160,0.18), transparent 65%),
-                rgba(4, 12, 22, 0.92);
-            border: 1px solid rgba(155,240,11,0.5);
-            box-shadow:
-                0 0 0 1px rgba(0,0,0,0.9),
-                0 40px 90px rgba(0,0,0,0.95);
-            backdrop-filter: blur(var(--blur-strong));
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-primary::before {
-            content: "";
-            position: absolute;
-            inset: -40%;
-            background-image: conic-gradient(from 210deg, rgba(155,240,11,0.07), transparent 40%, rgba(0,255,170,0.06), transparent 70%, rgba(155,240,11,0.1));
-            animation: rotate-aura 22s linear infinite;
-            opacity: 0.9;
-            mix-blend-mode: soft-light;
-            pointer-events: none;
-        }
-
-        @keyframes rotate-aura {
-            to { transform: rotate(360deg); }
-        }
-
-        .hero-inner {
-            position: relative;
-            z-index: 1;
-        }
-
-        .hero-badge-row {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 10px 6px 6px;
-            border-radius: 999px;
-            background: rgba(2,6,10,0.85);
-            border: 1px solid rgba(155,240,11,0.7);
-            margin-bottom: 16px;
-        }
-
-        .hero-badge-icon {
-            width: 26px;
-            height: 26px;
-            border-radius: 999px;
-            background: radial-gradient(circle at 30% 30%, #ffffff, #ffe584);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow:
-                0 0 14px rgba(255,215,0,0.7),
-                inset 0 0 10px rgba(0,0,0,0.6);
-            font-size: 15px;
-        }
-
-        .hero-badge-text {
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: rgba(255,255,255,0.78);
-        }
-
-        .hero-title {
-            font-size: clamp(28px, 4vw, 38px);
-            line-height: 1.04;
-            margin-bottom: 10px;
-        }
-
-        .hero-title span {
-            display: inline-block;
-            background: linear-gradient(120deg, #eaffb8, #9bf00b, #43ffb2, #9bf00b);
-            -webkit-background-clip: text;
-            color: transparent;
-            text-shadow:
-                0 0 24px rgba(155,240,11,0.8),
-                0 0 42px rgba(0,0,0,1);
-        }
-
-        .hero-subtitle {
-            font-size: 15px;
-            color: var(--text-muted);
-            max-width: 420px;
-            margin-bottom: 18px;
-        }
-
-        .hero-meta-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            align-items: center;
-            margin-bottom: 18px;
-        }
-
-        .hero-chip {
-            font-size: 11px;
-            padding: 7px 11px;
-            border-radius: 999px;
-            border: 1px solid rgba(155,240,11,0.55);
-            background: radial-gradient(circle at top left, rgba(155,240,11,0.14), transparent 65%);
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: rgba(229, 255, 195, 0.9);
-        }
-
-        .hero-chip--ghost {
-            border-style: dashed;
-            border-color: rgba(255,255,255,0.35);
-            color: rgba(210,220,240,0.8);
-            background: rgba(8,12,20,0.8);
-        }
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 18px;
-        }
-
-        .btn {
-            position: relative;
-            overflow: hidden;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 11px 18px;
-            border-radius: 999px;
-            font-size: 14px;
-            border: 1px solid transparent;
-            cursor: pointer;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: transform var(--transition-med), box-shadow var(--transition-med), border-color var(--transition-med), background var(--transition-med), color var(--transition-med);
-        }
-
-        .btn-primary {
-            background: radial-gradient(circle at top left, #eaffb8, #9bf00b);
-            color: #02040a;
-            border-color: rgba(155,240,11,0.85);
-            box-shadow:
-                0 0 0 1px rgba(0,0,0,0.9),
-                0 22px 60px rgba(155,240,11,0.5);
-            font-weight: 600;
-        }
-
-        .btn-primary::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 0 0, rgba(255,255,255,0.45), transparent 45%);
-            opacity: 0;
-            transition: opacity 0.4s ease-out;
-            pointer-events: none;
-        }
-
-        .btn-outline {
-            color: #eaf3ff;
-            border-color: rgba(155,240,11,0.55);
-            background: rgba(4, 10, 18, 0.86);
-        }
-
-        .btn-icon {
-            font-size: 15px;
-        }
-
-        .btn:hover {
-            transform: translateY(-1px) translateZ(0);
-        }
-
-        .btn-primary:hover::after {
-            opacity: 1;
-        }
-
-        .btn-outline:hover {
-            border-color: rgba(255,255,255,0.65);
-            background: rgba(6, 14, 26, 0.96);
-            box-shadow:
-                0 18px 42px rgba(0,0,0,0.9),
-                0 0 26px rgba(155,240,11,0.4);
-        }
-
-        .hero-footnote {
-            font-size: 11px;
-            color: rgba(202, 211, 230, 0.8);
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .hero-footnote strong {
-            color: var(--accent-strong);
-        }
-
-        .hero-footnote-dot {
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.5);
-        }
-
-        /* Right hero – radar / stats */
-
-        .hero-secondary {
-            border-radius: var(--radius-lg);
-            padding: 20px 20px 18px;
-            background:
-                radial-gradient(circle at 15% 0, rgba(155,240,11,0.25), transparent 65%),
-                radial-gradient(circle at 100% 100%, rgba(0,255,170,0.12), transparent 55%),
-                rgba(4, 10, 20, 0.96);
-            border: 1px solid rgba(255,255,255,0.16);
-            box-shadow:
-                0 32px 80px rgba(0,0,0,0.9),
-                inset 0 0 60px rgba(0,0,0,0.8);
-            backdrop-filter: blur(20px);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .hero-secondary-head {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .hero-secondary-title {
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-            color: var(--text-muted);
-        }
-
-        .status-pill {
-            font-size: 11px;
-            padding: 5px 9px;
-            border-radius: 999px;
-            border: 1px solid rgba(155,240,11,0.6);
-            background: rgba(6, 16, 20, 0.92);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: rgba(225,235,250,0.9);
-        }
-
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 0 8px rgba(155,240,11,0.9);
-        }
-
-        .hero-stat-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 10px;
-        }
-
-        .hero-stat-card {
-            padding: 10px 11px;
-            border-radius: 18px;
-            border: 1px solid rgba(255,255,255,0.12);
-            background: radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 75%);
-        }
-
-        .hero-stat-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .hero-stat-value {
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .hero-stat-sub {
-            font-size: 11px;
-            color: rgba(180, 191, 214, 0.92);
-            margin-top: 2px;
-        }
-
-        .hero-radar {
-            margin-top: 4px;
-            position: relative;
-            border-radius: 22px;
-            border: 1px solid rgba(255,255,255,0.16);
-            background: radial-gradient(circle at 50% -40%, rgba(155,240,11,0.2), transparent 65%),
-                        radial-gradient(circle at 90% 120%, rgba(0,255,160,0.16), transparent 62%),
-                        rgba(3, 8, 16, 0.98);
-            padding: 14px 14px 12px;
-            overflow: hidden;
-        }
-
-        .hero-console-label {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .hero-console-label span:first-child {
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-        }
-
-        .hero-console-label strong {
-            color: var(--accent-strong);
-        }
-
-        .radar-grid {
-            position: relative;
-            aspect-ratio: 1 / 0.55;
-            border-radius: 18px;
-            border: 1px solid rgba(255,255,255,0.16);
-            background:
-                radial-gradient(circle at 50% 0, rgba(155,240,11,0.3), transparent 68%),
-                radial-gradient(circle at 20% 100%, rgba(0,255,160,0.22), transparent 78%),
-                radial-gradient(circle at 80% 100%, rgba(144,202,249,0.22), transparent 78%),
-                repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0 1px, transparent 1px 32px),
-                repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 32px),
-                radial-gradient(circle at center, rgba(0,0,0,0.9), #020508);
-            overflow: hidden;
-        }
-
-        .radar-beam {
-            position: absolute;
-            inset: -40%;
-            background: conic-gradient(from 180deg, rgba(155,240,11,0.1), transparent 40%, rgba(144,202,249,0.08), transparent 75%, rgba(155,240,11,0.14));
-            mix-blend-mode: screen;
-            animation: rotate-beam 11s linear infinite;
-        }
-
-        @keyframes rotate-beam {
-            to { transform: rotate(360deg); }
-        }
-
-        .radar-dot {
-            position: absolute;
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow:
-                0 0 12px rgba(155,240,11,0.8),
-                0 0 20px rgba(155,240,11,0.7);
-        }
-
-        .radar-dot--top { top: 22%; left: 20%; }
-        .radar-dot--mid { top: 48%; left: 50%; }
-        .radar-dot--right { top: 36%; left: 76%; }
-        .radar-dot--low { top: 70%; left: 34%; }
-
-        .radar-legend {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-            font-size: 11px;
-            color: rgba(190, 201, 225, 0.9);
-        }
-
-        .radar-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 8px;
-            border-radius: 999px;
-            background: rgba(4, 10, 20, 0.95);
-            border: 1px solid rgba(255,255,255,0.18);
-        }
-
-        .radar-pill-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: var(--accent);
-            box-shadow: 0 0 10px rgba(155,240,11,0.7);
-        }
-
-        .radar-pill span:last-child {
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-        }
-
-        /* ====== STATS BAND ====== */
-
-        .stats-band {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 14px;
-            margin-bottom: 26px;
-        }
-
-        .stat-card {
-            border-radius: var(--radius-md);
-            padding: 14px 14px 12px;
-            background: radial-gradient(circle at top, rgba(255,255,255,0.06), transparent 70%),
-                        rgba(4, 10, 20, 0.94);
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.9);
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .stat-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 11px;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.14em;
-        }
-
-        .stat-trend {
-            font-size: 11px;
-            color: var(--accent-strong);
-        }
-
-        .stat-trend--down {
-            color: #ff9fb8;
-        }
-
-        .stat-value {
-            font-size: 22px;
-            font-weight: 600;
-        }
-
-        .stat-footnote {
-            font-size: 11px;
-            color: rgba(186, 196, 217, 0.9);
-        }
-
-        .stat-meter {
-            margin-top: 4px;
-            height: 5px;
-            border-radius: 999px;
-            background: rgba(12, 18, 30, 0.95);
-            overflow: hidden;
-        }
-
-        .stat-meter-fill {
-            height: 100%;
-            border-radius: inherit;
-            background: linear-gradient(90deg, #9bf00b, #43ffb2, #9bf00b);
-            box-shadow: 0 0 18px rgba(155,240,11,0.8);
-        }
-
-        /* ====== LEADERBOARD ====== */
-
-        .section-header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-
-        .section-title-block {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-        }
-
-        .section-eyebrow {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--text-muted);
-        }
-
-        .section-title {
-            font-size: 22px;
-            letter-spacing: 0.02em;
-        }
-
-        .section-title span {
-            color: var(--accent-strong);
-        }
-
-        .section-subtitle {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-
-        .leaderboard-shell {
-            border-radius: var(--radius-lg);
-            padding: 16px 16px 18px;
-            background:
-                radial-gradient(circle at top left, rgba(155,240,11,0.18), transparent 65%),
-                rgba(5, 10, 18, 0.96);
-            border: 1px solid rgba(255,255,255,0.12);
-            box-shadow:
-                0 24px 70px rgba(0,0,0,0.92),
-                0 0 34px rgba(155,240,11,0.24);
-            backdrop-filter: blur(22px);
-        }
-
-        .leaderboard-toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .input-shell {
-            flex: 1 1 220px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 11px;
-            border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(4, 10, 18, 0.9);
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .input-shell input {
-            border: none;
-            outline: none;
-            background: transparent;
-            color: var(--text);
-            width: 100%;
-            font: inherit;
-        }
-
-        .input-shell input::placeholder {
-            color: rgba(150, 159, 184,0.8);
-        }
-
-        .input-icon {
-            font-size: 14px;
-            opacity: 0.8;
-        }
-
-        .toolbar-filters {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .select-shell {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 7px 12px;
-            border-radius: 999px;
-            border: 1px solid rgba(255,255,255,0.2);
-            background: rgba(4, 10, 18, 0.96);
-            font-size: 12px;
-            color: var(--text-muted);
-            min-width: 120px;
-        }
-
-        .select-shell select {
-            border: none;
-            outline: none;
-            background: transparent;
-            color: var(--text);
-            font: inherit;
-            appearance: none;
-            padding-right: 12px;
-        }
-
-        .select-chevron {
-            position: absolute;
-            right: 10px;
-            font-size: 10px;
-            pointer-events: none;
-            opacity: 0.8;
-        }
-
-        .toolbar-tag {
-            font-size: 11px;
-            padding: 5px 9px;
-            border-radius: 999px;
-            border: 1px solid rgba(155,240,11,0.4);
-            background: rgba(4, 12, 22, 0.96);
-            color: rgba(215, 228, 255, 0.95);
-        }
-
-        /* LISTE DES JOUEURS */
-
-        .leaderboard-list {
-            margin-top: 6px;
-        }
-
-        .leaderboard-header-row {
-            display: grid;
-            grid-template-columns: 44px 2.2fr 1.3fr 1.2fr 1.2fr;
-            gap: 10px;
-            padding: 7px 14px 6px;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--text-muted);
+        
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
 
-        .player-row {
-            position: relative;
-            display: grid;
-            grid-template-columns: 44px 2.2fr 1.3fr 1.2fr 1.2fr;
-            gap: 10px;
-            padding: 10px 14px;
-            border-radius: 18px;
-            background: linear-gradient(120deg, rgba(255,255,255,0.03), rgba(4, 10, 18,0.96));
-            border: 1px solid rgba(255,255,255,0.12);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.9);
-            align-items: center;
-            margin-bottom: 7px;
-            overflow: hidden;
-            cursor: default;
-            transition: transform var(--transition-med), box-shadow var(--transition-med), border-color var(--transition-med), background var(--transition-med), opacity var(--transition-fast);
+        .glass-panel:hover {
+            border-color: rgba(155, 240, 11, 0.3);
+            background: rgba(20, 30, 50, 0.7);
         }
 
-        .player-row::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 0 0, rgba(155,240,11,0.24), transparent 60%);
-            opacity: 0;
-            transition: opacity var(--transition-med);
-            pointer-events: none;
+        .text-glow {
+            text-shadow: 0 0 20px rgba(155, 240, 11, 0.5);
         }
 
-        .player-row:hover {
-            transform: translateY(-2px) translateZ(0);
-            box-shadow:
-                0 22px 52px rgba(0,0,0,0.96),
-                0 0 26px rgba(155,240,11,0.3);
-            border-color: rgba(155,240,11,0.8);
+        /* Scrollbar custom */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-
-        .player-row:hover::before {
-            opacity: 1;
-        }
-
-        .player-row.rank-1 {
-            border-color: rgba(255,215,0,0.9);
-            background:
-                radial-gradient(circle at 0 0, rgba(255,215,0,0.24), transparent 55%),
-                rgba(4, 9, 18, 0.98);
-            box-shadow:
-                0 0 0 1px rgba(0,0,0,0.9),
-                0 0 38px rgba(255,215,0,0.7),
-                0 30px 70px rgba(0,0,0,0.95);
-        }
-
-        .player-row.rank-2 {
-            border-color: rgba(192,192,192,0.85);
-        }
-
-        .player-row.rank-3 {
-            border-color: rgba(205,127,50,0.9);
-        }
-
-        .player-rank {
-            font-size: 20px;
-            font-weight: 700;
-            text-align: center;
-        }
-
-        .player-rank--gold { color: var(--gold); text-shadow: 0 0 18px rgba(255,215,0,0.9); }
-        .player-rank--silver { color: var(--silver); text-shadow: 0 0 18px rgba(192,192,192,0.9); }
-        .player-rank--bronze { color: var(--bronze); text-shadow: 0 0 18px rgba(205,127,50,0.9); }
-
-        .player-main {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .player-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 999px;
-            background: radial-gradient(circle at 30% 30%, #ffffff, #b0ff70);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #02060a;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow:
-                0 0 0 2px rgba(155,240,11,0.9),
-                0 0 22px rgba(155,240,11,0.8);
-        }
-
-        .player-id-block {
-            display: flex;
-            flex-direction: column;
-            gap: 3px;
-        }
-
-        .player-tag {
-            font-size: 15px;
-            font-weight: 600;
-        }
-
-        .player-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .meta-pill {
-            padding: 3px 8px;
-            border-radius: 999px;
-            background: rgba(2,8,16,0.95);
-            border: 1px solid rgba(255,255,255,0.14);
-        }
-
-        .meta-pill strong {
-            color: var(--accent-strong);
-        }
-
-        .player-column {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-            font-size: 13px;
-        }
-
-        .player-column-label {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: var(--text-muted);
-        }
-
-        .player-score {
-            font-size: 17px;
-            font-weight: 600;
-            color: var(--accent-strong);
-        }
-
-        .player-score-bar {
-            margin-top: 3px;
-            height: 4px;
-            border-radius: 999px;
-            background: rgba(12, 18, 30, 0.95);
-            overflow: hidden;
-        }
-
-        .player-score-fill {
-            height: 100%;
-            border-radius: inherit;
-            background: linear-gradient(90deg, #9bf00b, #43ffb2);
-            box-shadow: 0 0 16px rgba(155,240,11,0.8);
-            transform-origin: left;
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
         }
-
-        .player-achievements {
-            color: #ffe57f;
-        }
-
-        .player-region {
-            font-size: 13px;
-            color: rgba(192, 207, 232, 0.95);
-        }
-
-        .player-region small {
-            display: block;
-            font-size: 10px;
-            color: var(--text-muted);
-        }
-
-        .player-actions {
-            font-size: 11px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-
-        .player-actions span {
-            padding: 4px 8px;
-            border-radius: 999px;
-            border: 1px dashed rgba(255,255,255,0.26);
-            color: rgba(216, 228, 255, 0.95);
-        }
-
-        .player-actions span.highlight {
-            border-style: solid;
-            border-color: rgba(155,240,11,0.8);
-            color: var(--accent-strong);
-            background: rgba(6,16,20,0.96);
-        }
-
-        .player-row.fade-out {
-            opacity: 0.25;
-        }
-
-        /* ====== FOOTER ====== */
-
-        footer {
-            margin-top: 28px;
-            padding-top: 18px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 12px;
-            color: var(--text-muted);
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            gap: 8px;
-        }
-
-        footer strong {
-            color: var(--accent-strong);
-        }
-
-        /* ====== RESPONSIVE ====== */
-
-        @media (max-width: 960px) {
-            .hero {
-                grid-template-columns: minmax(0, 1fr);
-            }
-        }
-
-        @media (max-width: 780px) {
-            .top-nav {
-                border-radius: 20px;
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-
-            .nav-links {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .stats-band {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .leaderboard-header-row,
-            .player-row {
-                grid-template-columns: 32px 1.8fr 1.2fr 1.2fr;
-            }
-
-            .player-row .player-actions {
-                display: none;
-            }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
         }
-
-        @media (max-width: 640px) {
-            .stats-band {
-                grid-template-columns: minmax(0, 1fr);
-            }
-
-            .leaderboard-shell {
-                padding: 14px 10px 16px;
-            }
-
-            .leaderboard-header-row,
-            .player-row {
-                grid-template-columns: 32px 1.9fr 1.1fr;
-            }
-
-            .player-row .player-region {
-                display: none;
-            }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #107C10;
         }
-
-        @media (max-width: 520px) {
-            .top-nav {
-                padding-inline: 14px;
-            }
-
-            .hero-primary,
-            .hero-secondary {
-                padding: 18px 16px;
-            }
-
-            .leaderboard-header-row {
-                display: none;
-            }
-
-            .player-row {
-                grid-template-columns: 32px 1.8fr;
-                row-gap: 8px;
-            }
 
-            .player-column:nth-child(n+3) {
-                display: none;
-            }
+        .bg-noise {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
         }
+        
+        /* Modal Transition */
+        [x-cloak] { display: none !important; }
     </style>
+
+    <!-- App Logic Definition -->
+    <script>
+        function leaderboardApp() {
+            return {
+                search: '',
+                sortBy: 'rank',
+                loading: true,
+                selectedPlayer: null, // Pour la modale
+                players: [
+                    { id: 1, rank: 1, gamertag: 'xXShadowKingXx', score: 998750, kd: 3.14, winrate: 82, region: 'FR', team: 'Vitality', platforms: ['Series X'], achievements: 1250, hours: 2847 },
+                    { id: 2, rank: 2, gamertag: 'ProGamer2025', score: 987320, kd: 2.86, winrate: 79, region: 'US', team: 'Cloud9', platforms: ['PC', 'Cloud'], achievements: 1198, hours: 2654 },
+                    { id: 3, rank: 3, gamertag: 'EliteSniper99', score: 976890, kd: 3.68, winrate: 77, region: 'DE', team: 'G2', platforms: ['Series X'], achievements: 1175, hours: 2501 },
+                    { id: 4, rank: 4, gamertag: 'NightHawk_FR', score: 965450, kd: 2.41, winrate: 75, region: 'FR', team: 'Karmine', platforms: ['Series S'], achievements: 1142, hours: 2389 },
+                    { id: 5, rank: 5, gamertag: 'ThunderStrike', score: 954780, kd: 2.91, winrate: 73, region: 'JP', team: 'Zeta', platforms: ['Series X'], achievements: 1128, hours: 2276 },
+                    { id: 6, rank: 6, gamertag: 'CyberWarrior', score: 943210, kd: 2.53, winrate: 71, region: 'BR', team: 'LOUD', platforms: ['PC', 'Cloud'], achievements: 1095, hours: 2198 },
+                    { id: 7, rank: 7, gamertag: 'PhoenixRising', score: 938560, kd: 2.32, winrate: 70, region: 'AU', team: 'Chiefs', platforms: ['Series X', 'PC'], achievements: 1087, hours: 2145 },
+                    { id: 8, rank: 8, gamertag: 'VortexMaster', score: 927890, kd: 2.18, winrate: 69, region: 'UK', team: 'Fnatic', platforms: ['PC'], achievements: 1063, hours: 2087 },
+                    { id: 9, rank: 9, gamertag: 'ApexLegend_X', score: 921340, kd: 2.76, winrate: 68, region: 'CA', team: 'Optic', platforms: ['Series X'], achievements: 1051, hours: 2034 },
+                    { id: 10, rank: 10, gamertag: 'QuantumGamer', score: 915670, kd: 2.27, winrate: 67, region: 'AE', team: 'Falcons', platforms: ['Series X'], achievements: 1038, hours: 1987 },
+                ],
+                
+                init() {
+                    setTimeout(() => {
+                        this.loading = false;
+                        this.$nextTick(() => {
+                            if (window.lucide) lucide.createIcons();
+                        });
+                    }, 800);
+                },
+
+                get filteredPlayers() {
+                    let result = this.players;
+                    if (this.search) {
+                        const term = this.search.toLowerCase();
+                        result = result.filter(p => p.gamertag.toLowerCase().includes(term));
+                    }
+                    return result.sort((a, b) => {
+                        if (this.sortBy === 'rank') return a.rank - b.rank;
+                        if (this.sortBy === 'score') return b.score - a.score;
+                        if (this.sortBy === 'kd') return b.kd - a.kd;
+                    });
+                },
+
+                formatNumber(num) {
+                    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+                },
+
+                scrollToLeaderboard() {
+                    const el = document.getElementById('dashboard'); // ID corrigé
+                    if(el) el.scrollIntoView({ behavior: 'smooth' });
+                },
+
+                openPlayerModal(player) {
+                    this.selectedPlayer = player;
+                    document.body.style.overflow = 'hidden'; // Empêcher le scroll arrière-plan
+                },
+
+                closePlayerModal() {
+                    this.selectedPlayer = null;
+                    document.body.style.overflow = ''; // Réactiver le scroll
+                }
+            }
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
 </head>
-<body>
-<div class="bg-orbit"></div>
-<div class="bg-grid"></div>
+<body class="bg-dark-900 min-h-screen relative selection:bg-xbox-neon selection:text-black" x-data="leaderboardApp()">
 
-<div class="page">
-    <!-- NAVIGATION -->
-    <header class="top-nav">
-        <div class="brand">
-            <div class="brand-mark"><span>X</span></div>
-            <div class="brand-text">
-                <div class="brand-title">Xbox Elite 1%</div>
-                <div class="brand-sub">Top mondial 2025</div>
-            </div>
-        </div>
+    <!-- Background Elements -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+        <div class="absolute top-0 left-0 w-full h-full bg-grid-pattern bg-[length:40px_40px] opacity-[0.07]"></div>
+        <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-xbox-neon rounded-full blur-[150px] opacity-10 animate-pulse-slow"></div>
+        <div class="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-xbox rounded-full blur-[180px] opacity-10 animate-pulse-slow"></div>
+        <div class="absolute inset-0 bg-noise opacity-30 mix-blend-overlay"></div>
+    </div>
 
-        <div class="nav-links">
-            <button class="nav-chip nav-chip--active" data-scroll="#leaderboard">Classement</button>
-            <button class="nav-chip" data-scroll="#stats">Stats globales</button>
-            <button class="nav-chip" data-scroll="#about">À propos</button>
-            <div class="pill-divider"></div>
-            <button class="theme-toggle" id="themeToggle">
-                <div class="theme-toggle-knob"></div>
-                <span>Mode pro</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- HERO -->
-    <section class="hero" id="about">
-        <article class="hero-primary">
-            <div class="hero-inner">
-                <div class="hero-badge-row">
-                    <div class="hero-badge-icon">🏆</div>
-                    <div class="hero-badge-text">Classement temps réel de l’élite mondiale Xbox</div>
-                </div>
-
-                <h1 class="hero-title">
-                    Suis les <span>Gamertags les plus puissants</span><br>
-                    de l’écosystème Xbox.
-                </h1>
-
-                <p class="hero-subtitle">
-                    Un tableau de bord taillé pour l’élite : scores G, taux de victoire,
-                    multi‑plateforme & performance compétitive, le tout dans une expérience
-                    digne des meilleurs sites web de 2025.
-                </p>
-
-                <div class="hero-meta-row">
-                    <div class="hero-chip">Données actualisées</div>
-                    <div class="hero-chip hero-chip--ghost">Conçu pour pros, casu & streamers</div>
-                </div>
-
-                <div class="hero-actions">
-                    <button class="btn btn-primary" data-scroll="#leaderboard">
-                        <span class="btn-icon">⚡</span>
-                        Voir le top mondial
-                    </button>
-                    <button class="btn btn-outline" data-scroll="#stats">
-                        <span class="btn-icon">📊</span>
-                        Explorer les stats globales
-                    </button>
-                </div>
-
-                <div class="hero-footnote">
-                    <span><strong>1%</strong> des meilleurs joueurs sur des millions d’inscrits</span>
-                    <span class="hero-footnote-dot"></span>
-                    <span>Opti UX / UI & animations ultra‑fluides</span>
-                </div>
-            </div>
-        </article>
-
-        <aside class="hero-secondary">
-            <div class="hero-secondary-head">
-                <div>
-                    <div class="hero-secondary-title">Instantané compétitif</div>
-                </div>
-                <div class="status-pill">
-                    <span class="status-dot"></span>
-                    <span>Serveurs live</span>
-                </div>
-            </div>
-
-            <div class="hero-stat-grid">
-                <div class="hero-stat-card">
-                    <div class="hero-stat-label">Players suivis</div>
-                    <div class="hero-stat-value">512 738</div>
-                    <div class="hero-stat-sub">+8 421 ce mois‑ci</div>
-                </div>
-                <div class="hero-stat-card">
-                    <div class="hero-stat-label">Score moyen élite</div>
-                    <div class="hero-stat-value">842 310 G</div>
-                    <div class="hero-stat-sub">Top 1% mondial</div>
-                </div>
-                <div class="hero-stat-card">
-                    <div class="hero-stat-label">Winrate médian</div>
-                    <div class="hero-stat-value">71,4%</div>
-                    <div class="hero-stat-sub">Classé compétitif</div>
-                </div>
-            </div>
-
-            <div class="hero-radar">
-                <div class="hero-console-label">
-                    <span>profil performance</span>
-                    <span>Multi‑plateforme <strong>Xbox / PC / Cloud</strong></span>
-                </div>
-
-                <div class="radar-grid">
-                    <div class="radar-beam"></div>
-                    <div class="radar-dot radar-dot--top"></div>
-                    <div class="radar-dot radar-dot--mid"></div>
-                    <div class="radar-dot radar-dot--right"></div>
-                    <div class="radar-dot radar-dot--low"></div>
-                </div>
-
-                <div class="radar-legend">
-                    <div class="radar-pill">
-                        <span class="radar-pill-dot"></span>
-                        <span>Précision • K/D • Score G</span>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300 border-b border-white/5 bg-dark-900/80 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-3 group cursor-pointer" onclick="window.location.href='#'">
+                    <div class="relative w-10 h-10 flex items-center justify-center rounded-full border border-xbox-neon/50 bg-xbox/10 group-hover:bg-xbox/20 transition-all duration-300 group-hover:shadow-[0_0_15px_rgba(155,240,11,0.4)]">
+                        <i data-lucide="xbox" class="text-xbox-neon w-6 h-6"></i>
                     </div>
-                    <div>Lecture temps réel simulée</div>
+                    <div>
+                        <h1 class="font-display font-bold text-xl tracking-wider uppercase text-white leading-none">Xbox Elite <span class="text-xbox-neon">1%</span></h1>
+                        <span class="text-[10px] text-gray-400 tracking-[0.2em] uppercase">Leaderboard Quantique</span>
+                    </div>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
+                    <a href="#dashboard" class="text-gray-400 hover:text-white transition-colors relative group">
+                        Dashboard
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-xbox-neon transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="#analytics" class="text-gray-400 hover:text-white transition-colors relative group">
+                        Analytique
+                        <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-xbox-neon transition-all group-hover:w-full"></span>
+                    </a>
+                    <a href="https://monblog-sa-abasse.blogspot.com/" target="_blank" class="px-5 py-2 rounded-full border border-xbox-neon/30 text-xbox-neon hover:bg-xbox-neon hover:text-black transition-all duration-300 font-display font-bold tracking-wider shadow-[0_0_10px_rgba(155,240,11,0.1)] hover:shadow-[0_0_20px_rgba(155,240,11,0.4)]">
+                        CONNEXION
+                    </a>
                 </div>
             </div>
-        </aside>
-    </section>
-
-    <!-- STATS GLOBALES -->
-    <section id="stats">
-        <div class="stats-band">
-            <article class="stat-card">
-                <div class="stat-header">
-                    <span>Joueurs Xbox actifs</span>
-                    <span class="stat-trend">+3,2% / mois</span>
-                </div>
-                <div class="stat-value">50 124 903</div>
-                <div class="stat-footnote">Base globale estimée pour 2025.</div>
-                <div class="stat-meter">
-                    <div class="stat-meter-fill" style="width: 78%;"></div>
-                </div>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-header">
-                    <span>Membres élite 1%</span>
-                    <span class="stat-trend">+1 873</span>
-                </div>
-                <div class="stat-value">501 249</div>
-                <div class="stat-footnote">Score G & indicateurs de performance combinés.</div>
-                <div class="stat-meter">
-                    <div class="stat-meter-fill" style="width: 96%;"></div>
-                </div>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-header">
-                    <span>Sessions / jour</span>
-                    <span class="stat-trend">+12% week‑end</span>
-                </div>
-                <div class="stat-value">7,3 M</div>
-                <div class="stat-footnote">Inclut console, PC & Cloud Gaming.</div>
-                <div class="stat-meter">
-                    <div class="stat-meter-fill" style="width: 64%;"></div>
-                </div>
-            </article>
-
-            <article class="stat-card">
-                <div class="stat-header">
-                    <span>Taux de complétion succès</span>
-                    <span class="stat-trend stat-trend--down">‑0,7%</span>
-                </div>
-                <div class="stat-value">43,9%</div>
-                <div class="stat-footnote">Plus de jeux live‑service, plus de défis.</div>
-                <div class="stat-meter">
-                    <div class="stat-meter-fill" style="width: 44%;"></div>
-                </div>
-            </article>
         </div>
-    </section>
+    </nav>
 
-    <!-- LEADERBOARD -->
-    <section id="leaderboard">
-        <div class="section-header">
-            <div class="section-title-block">
-                <div class="section-eyebrow">Tableau de bord</div>
-                <h2 class="section-title">Classement <span>Xbox Elite 1%</span></h2>
-                <p class="section-subtitle">
-                    Recherche ton gamertag, compare tes scores et observe l’évolution des joueurs du top mondial.
+    <!-- Main Content -->
+    <main class="relative z-10 pt-32 pb-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+
+        <!-- Hero Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 mb-20 items-center">
+            <div class="lg:col-span-7 space-y-8 animate-fade-in-up">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-xbox/10 border border-xbox/20 text-xbox-neon text-xs font-bold tracking-widest uppercase mb-2">
+                    <span class="w-2 h-2 rounded-full bg-xbox-neon animate-pulse"></span>
+                    Live Data Stream • 2025 Season
+                </div>
+                <h2 class="text-5xl md:text-7xl font-display font-bold uppercase tracking-tighter leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-gray-200 to-gray-500 drop-shadow-lg">
+                    Mesurez votre <br>
+                    <span class="text-xbox-neon text-glow">Suprématie</span>
+                </h2>
+                <p class="text-gray-400 text-lg md:text-xl max-w-2xl leading-relaxed border-l-2 border-xbox-neon/50 pl-6">
+                    L'unique tableau de bord temps réel qui révèle la performance pure du Top 1% Mondial des Gamertags Xbox. Cessez d'estimer, commencez à quantifier.
                 </p>
+                <div class="flex flex-wrap gap-4">
+                    <button @click="scrollToLeaderboard" class="group relative px-8 py-4 bg-xbox-neon text-black font-display font-bold text-lg tracking-wider rounded-sm overflow-hidden transition-all hover:scale-105">
+                        <div class="absolute inset-0 bg-white/40 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+                        <span class="relative flex items-center gap-2">
+                            VOIR LE CLASSEMENT <i data-lucide="arrow-down-right" class="w-5 h-5"></i>
+                        </span>
+                    </button>
+                    <a href="https://samynantoyabasse-shop.fourthwall.com" target="_blank" class="px-8 py-4 glass-panel text-white font-display font-bold text-lg tracking-wider rounded-sm hover:border-xbox-neon/50 transition-all flex items-center gap-2 group">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-xbox-neon group-hover:scale-110 transition-transform"></i> SHOP OFFICIAL
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats HUD (Target for #analytics) -->
+            <div id="analytics" class="lg:col-span-5 relative scroll-mt-24">
+                <div class="absolute -inset-1 bg-gradient-to-r from-xbox-neon to-blue-500 rounded-2xl blur opacity-20 animate-pulse"></div>
+                <div class="glass-panel p-6 rounded-2xl relative">
+                    <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                        <h3 class="font-display font-bold text-xl uppercase tracking-wider text-white">Global Metrics</h3>
+                        <i data-lucide="activity" class="text-xbox-neon animate-pulse"></i>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <!-- Stat Card 1 -->
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-xbox-neon/30 transition-colors group cursor-default">
+                            <div class="text-gray-400 text-xs uppercase tracking-widest mb-1">Moyenne Elite</div>
+                            <div class="text-2xl font-display font-bold text-white group-hover:text-xbox-neon transition-colors">842,310 <span class="text-sm">G</span></div>
+                            <div class="text-xs text-xbox-neon mt-2 flex items-center gap-1">
+                                <i data-lucide="trending-up" class="w-3 h-3"></i> +12% vs 2024
+                            </div>
+                        </div>
+                        <!-- Stat Card 2 -->
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-xbox-neon/30 transition-colors group cursor-default">
+                            <div class="text-gray-400 text-xs uppercase tracking-widest mb-1">Joueurs Suivis</div>
+                            <div class="text-2xl font-display font-bold text-white group-hover:text-blue-400 transition-colors">512,738</div>
+                            <div class="text-xs text-blue-400 mt-2 flex items-center gap-1">
+                                <i data-lucide="users" class="w-3 h-3"></i> Active now
+                            </div>
+                        </div>
+                        <!-- Stat Card 3 -->
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-xbox-neon/30 transition-colors">
+                            <div class="text-gray-400 text-xs uppercase tracking-widest mb-1">Winrate Médian</div>
+                            <div class="text-2xl font-display font-bold text-white">71.4%</div>
+                            <div class="h-1 w-full bg-gray-700 rounded-full mt-3 overflow-hidden">
+                                <div class="h-full bg-xbox-neon w-[71.4%]"></div>
+                            </div>
+                        </div>
+                        <!-- Stat Card 4 -->
+                        <div class="p-4 rounded-xl bg-white/5 border border-white/5 hover:border-xbox-neon/30 transition-colors">
+                            <div class="text-gray-400 text-xs uppercase tracking-widest mb-1">Completion</div>
+                            <div class="text-2xl font-display font-bold text-white">43.9%</div>
+                            <div class="h-1 w-full bg-gray-700 rounded-full mt-3 overflow-hidden">
+                                <div class="h-full bg-blue-500 w-[43.9%]"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="leaderboard-shell">
-            <div class="leaderboard-toolbar">
-                <div class="input-shell">
-                    <span class="input-icon">🔎</span>
-                    <input id="searchInput" type="text" placeholder="Rechercher un gamertag (ex : xXShadowKingXx)">
+        <!-- Leaderboard Section (Target for #dashboard) -->
+        <div id="dashboard" class="space-y-6 scroll-mt-24">
+            <div class="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-white/10 pb-2">
+                <div>
+                    <h3 class="text-3xl font-display font-bold text-white uppercase tracking-tight">Leaderboard <span class="text-xbox-neon">Top 100</span></h3>
+                    <p class="text-gray-400 text-sm mt-1">Données synchronisées il y a 30 secondes</p>
                 </div>
-
-                <div class="toolbar-filters">
-                    <div class="select-shell">
-                        <span>Tri</span>
-                        <select id="sortSelect">
+                
+                <!-- Controls -->
+                <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+                    <!-- Search -->
+                    <div class="relative flex-grow md:flex-grow-0 group">
+                        <i data-lucide="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 group-focus-within:text-xbox-neon transition-colors w-4 h-4"></i>
+                        <input x-model="search" type="text" placeholder="Rechercher Gamertag..." class="w-full md:w-64 bg-black/40 border border-white/10 rounded-lg py-2.5 pl-10 pr-4 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-xbox-neon/60 focus:ring-1 focus:ring-xbox-neon/60 transition-all">
+                    </div>
+                    
+                    <!-- Filter Sort -->
+                    <div class="relative">
+                        <select x-model="sortBy" class="appearance-none bg-black/40 border border-white/10 rounded-lg py-2.5 pl-4 pr-10 text-sm text-white focus:outline-none focus:border-xbox-neon/60 cursor-pointer hover:bg-white/5 transition-all">
                             <option value="rank">Rang</option>
                             <option value="score">Score G</option>
-                            <option value="games">Parties jouées</option>
-                            <option value="achievements">Succès</option>
+                            <option value="kd">K/D Ratio</option>
                         </select>
-                        <span class="select-chevron">▾</span>
+                        <i data-lucide="chevron-down" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4 pointer-events-none"></i>
                     </div>
-
-                    <span class="toolbar-tag">Top 10 mondial simulé</span>
                 </div>
             </div>
 
-            <div class="leaderboard-list">
-                <div class="leaderboard-header-row">
-                    <div>#</div>
-                    <div>Gamertag</div>
-                    <div>Score G</div>
-                    <div>Succès</div>
-                    <div>Région</div>
+            <!-- Table Container (Desktop) / Cards (Mobile) -->
+            <div class="glass-panel rounded-2xl overflow-hidden min-h-[500px]">
+                
+                <!-- Table Header -->
+                <div class="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-white/5 border-b border-white/10 text-xs font-bold text-gray-400 uppercase tracking-wider">
+                    <div class="col-span-1 text-center">#</div>
+                    <div class="col-span-4">Gamertag</div>
+                    <div class="col-span-2 text-right">Score G</div>
+                    <div class="col-span-2 text-center">Stats</div>
+                    <div class="col-span-2 text-center">Platform</div>
+                    <div class="col-span-1 text-right">Action</div>
                 </div>
 
-                <!-- Lignes joueurs -->
-                <article class="player-row rank-1"
-                         data-rank="1"
-                         data-gamertag="xXShadowKingXx"
-                         data-score="998750"
-                         data-games="2847"
-                         data-achievements="1250">
-                    <div class="player-rank player-rank--gold">1</div>
+                <!-- Skeleton Loader -->
+                <div x-show="loading" class="animate-pulse space-y-2 p-4">
+                    <template x-for="i in 5">
+                        <div class="h-16 bg-white/5 rounded-lg w-full"></div>
+                    </template>
+                </div>
 
-                    <div class="player-main">
-                        <div class="player-avatar">X</div>
-                        <div class="player-id-block">
-                            <div class="player-tag">xXShadowKingXx</div>
-                            <div class="player-meta">
-                                <span class="meta-pill">K/D global : <strong>3,14</strong></span>
-                                <span class="meta-pill">Winrate : <strong>82%</strong></span>
+                <!-- Player List -->
+                <div x-show="!loading" class="divide-y divide-white/5">
+                    <template x-for="player in filteredPlayers" :key="player.id">
+                        <!-- Row Item (Clickable for Modal) -->
+                        <div class="group relative md:grid md:grid-cols-12 md:gap-4 md:px-6 md:py-5 p-5 items-center hover:bg-white/[0.03] transition-all duration-200">
+                            <!-- Mobile Rank Badge -->
+                            <div class="absolute top-4 right-4 md:hidden">
+                                <span class="text-2xl font-display font-bold text-white/20">#<span x-text="player.rank"></span></span>
+                            </div>
+
+                            <!-- Rank (Desktop) -->
+                            <div class="hidden md:flex col-span-1 justify-center">
+                                <div class="w-8 h-8 flex items-center justify-center rounded-full font-display font-bold text-lg"
+                                     :class="{
+                                        'bg-yellow-500/20 text-yellow-500 border border-yellow-500/50 shadow-[0_0_15px_rgba(234,179,8,0.2)]': player.rank === 1,
+                                        'bg-gray-400/20 text-gray-300 border border-gray-400/50': player.rank === 2,
+                                        'bg-orange-700/20 text-orange-400 border border-orange-700/50': player.rank === 3,
+                                        'text-gray-500': player.rank > 3
+                                     }">
+                                    <span x-text="player.rank"></span>
+                                </div>
+                            </div>
+
+                            <!-- Player Info -->
+                            <div class="col-span-4 flex items-center gap-4 cursor-pointer" @click="openPlayerModal(player)">
+                                <div class="relative">
+                                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-800 to-black border border-white/10 flex items-center justify-center text-xl font-bold font-display overflow-hidden group-hover:border-xbox-neon/50 transition-colors">
+                                        <span x-text="player.gamertag.charAt(0)"></span>
+                                        <!-- Online indicator -->
+                                        <div class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-xbox-neon border-2 border-black"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-white text-lg tracking-tight group-hover:text-xbox-neon transition-colors" x-text="player.gamertag"></h4>
+                                        <span x-show="player.rank <= 3" class="px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-500 text-[10px] font-bold uppercase border border-yellow-500/30">Pro</span>
+                                    </div>
+                                    <div class="text-xs text-gray-500 flex items-center gap-2 mt-0.5">
+                                        <span x-text="player.region"></span> • <span x-text="player.team"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Score (Mobile Label included) -->
+                            <div class="col-span-2 md:text-right mt-4 md:mt-0 flex justify-between md:block">
+                                <span class="md:hidden text-xs text-gray-500 uppercase font-bold tracking-wider">Score G</span>
+                                <div>
+                                    <div class="font-display font-bold text-xl text-white tracking-wide" x-text="formatNumber(player.score)"></div>
+                                    <div class="w-full md:w-auto h-1 bg-gray-800 rounded-full mt-2 md:ml-auto md:max-w-[100px]">
+                                        <div class="h-full bg-xbox-neon rounded-full" :style="`width: ${Math.min((player.score / 1000000) * 100, 100)}%`"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stats -->
+                            <div class="col-span-2 flex items-center justify-between md:justify-center gap-4 mt-4 md:mt-0 bg-white/5 md:bg-transparent p-3 md:p-0 rounded-lg">
+                                <div class="text-center">
+                                    <div class="text-[10px] text-gray-500 uppercase">K/D</div>
+                                    <div class="font-bold text-white" :class="{'text-xbox-neon': player.kd > 3}" x-text="player.kd"></div>
+                                </div>
+                                <div class="w-px h-6 bg-white/10"></div>
+                                <div class="text-center">
+                                    <div class="text-[10px] text-gray-500 uppercase">Win</div>
+                                    <div class="font-bold text-white" x-text="player.winrate + '%'"></div>
+                                </div>
+                            </div>
+
+                            <!-- Platform -->
+                            <div class="col-span-2 flex justify-center items-center gap-2 mt-4 md:mt-0 text-gray-400">
+                                <template x-if="player.platforms.includes('Series X')">
+                                    <i data-lucide="gamepad-2" class="w-5 h-5 hover:text-white transition-colors" title="Series X"></i>
+                                </template>
+                                <template x-if="player.platforms.includes('PC')">
+                                    <i data-lucide="monitor" class="w-5 h-5 hover:text-white transition-colors" title="PC"></i>
+                                </template>
+                                <template x-if="player.platforms.includes('Cloud')">
+                                    <i data-lucide="cloud" class="w-5 h-5 hover:text-white transition-colors" title="Cloud"></i>
+                                </template>
+                            </div>
+
+                            <!-- Action Button (Opens Modal) -->
+                            <div class="col-span-1 text-right mt-4 md:mt-0">
+                                <button @click="openPlayerModal(player)" class="w-full md:w-auto p-2 rounded-lg border border-white/10 hover:bg-xbox-neon hover:text-black hover:border-xbox-neon transition-all duration-300 group-hover:opacity-100 md:opacity-0 focus:opacity-100" title="Voir les détails">
+                                    <i data-lucide="bar-chart-2" class="w-5 h-5 mx-auto"></i>
+                                </button>
                             </div>
                         </div>
+                    </template>
+                    
+                    <!-- Empty State -->
+                    <div x-show="filteredPlayers.length === 0" class="p-12 text-center text-gray-500">
+                        <i data-lucide="ghost" class="w-12 h-12 mx-auto mb-4 opacity-50"></i>
+                        <p>Aucun joueur trouvé pour cette recherche.</p>
                     </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Score G</div>
-                        <div class="player-score">998 750</div>
-                        <div class="player-score-bar">
-                            <div class="player-score-fill" style="width: 100%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Succès</div>
-                        <div class="player-achievements">1 250 débloqués</div>
-                        <small>2 847 parties</small>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-region">
-                            Europe • <strong>FR</strong>
-                            <small>Série X | S</small>
-                        </div>
-                        <div class="player-actions">
-                            <span class="highlight">Suivre</span>
-                            <span>Comparer</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="player-row rank-2"
-                         data-rank="2"
-                         data-gamertag="ProGamer2025"
-                         data-score="987320"
-                         data-games="2654"
-                         data-achievements="1198">
-                    <div class="player-rank player-rank--silver">2</div>
-
-                    <div class="player-main">
-                        <div class="player-avatar">P</div>
-                        <div class="player-id-block">
-                            <div class="player-tag">ProGamer2025</div>
-                            <div class="player-meta">
-                                <span class="meta-pill">K/D global : <strong>2,86</strong></span>
-                                <span class="meta-pill">Winrate : <strong>79%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Score G</div>
-                        <div class="player-score">987 320</div>
-                        <div class="player-score-bar">
-                            <div class="player-score-fill" style="width: 96%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Succès</div>
-                        <div class="player-achievements">1 198 débloqués</div>
-                        <small>2 654 parties</small>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-region">
-                            Amérique du Nord • <strong>US</strong>
-                            <small>PC & Cloud</small>
-                        </div>
-                        <div class="player-actions">
-                            <span class="highlight">Suivre</span>
-                            <span>Comparer</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="player-row rank-3"
-                         data-rank="3"
-                         data-gamertag="EliteSniper99"
-                         data-score="976890"
-                         data-games="2501"
-                         data-achievements="1175">
-                    <div class="player-rank player-rank--bronze">3</div>
-
-                    <div class="player-main">
-                        <div class="player-avatar">E</div>
-                        <div class="player-id-block">
-                            <div class="player-tag">EliteSniper99</div>
-                            <div class="player-meta">
-                                <span class="meta-pill">K/D global : <strong>3,68</strong></span>
-                                <span class="meta-pill">Winrate : <strong>77%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Score G</div>
-                        <div class="player-score">976 890</div>
-                        <div class="player-score-bar">
-                            <div class="player-score-fill" style="width: 94%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Succès</div>
-                        <div class="player-achievements">1 175 débloqués</div>
-                        <small>2 501 parties</small>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-region">
-                            Europe • <strong>DE</strong>
-                            <small>Série X</small>
-                        </div>
-                        <div class="player-actions">
-                            <span class="highlight">Suivre</span>
-                            <span>Comparer</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="player-row"
-                         data-rank="4"
-                         data-gamertag="NightHawk_FR"
-                         data-score="965450"
-                         data-games="2389"
-                         data-achievements="1142">
-                    <div class="player-rank">4</div>
-
-                    <div class="player-main">
-                        <div class="player-avatar">N</div>
-                        <div class="player-id-block">
-                            <div class="player-tag">NightHawk_FR</div>
-                            <div class="player-meta">
-                                <span class="meta-pill">K/D global : <strong>2,41</strong></span>
-                                <span class="meta-pill">Winrate : <strong>75%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Score G</div>
-                        <div class="player-score">965 450</div>
-                        <div class="player-score-bar">
-                            <div class="player-score-fill" style="width: 92%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Succès</div>
-                        <div class="player-achievements">1 142 débloqués</div>
-                        <small>2 389 parties</small>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-region">
-                            Europe • <strong>FR</strong>
-                            <small>Série S</small>
-                        </div>
-                        <div class="player-actions">
-                            <span class="highlight">Suivre</span>
-                            <span>Comparer</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="player-row"
-                         data-rank="5"
-                         data-gamertag="ThunderStrike"
-                         data-score="954780"
-                         data-games="2276"
-                         data-achievements="1128">
-                    <div class="player-rank">5</div>
-
-                    <div class="player-main">
-                        <div class="player-avatar">T</div>
-                        <div class="player-id-block">
-                            <div class="player-tag">ThunderStrike</div>
-                            <div class="player-meta">
-                                <span class="meta-pill">K/D global : <strong>2,91</strong></span>
-                                <span class="meta-pill">Winrate : <strong>73%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Score G</div>
-                        <div class="player-score">954 780</div>
-                        <div class="player-score-bar">
-                            <div class="player-score-fill" style="width: 90%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Succès</div>
-                        <div class="player-achievements">1 128 débloqués</div>
-                        <small>2 276 parties</small>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-region">
-                            Asie • <strong>JP</strong>
-                            <small>Série X</small>
-                        </div>
-                        <div class="player-actions">
-                            <span class="highlight">Suivre</span>
-                            <span>Comparer</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="player-row"
-                         data-rank="6"
-                         data-gamertag="CyberWarrior"
-                         data-score="943210"
-                         data-games="2198"
-                         data-achievements="1095">
-                    <div class="player-rank">6</div>
-
-                    <div class="player-main">
-                        <div class="player-avatar">C</div>
-                        <div class="player-id-block">
-                            <div class="player-tag">CyberWarrior</div>
-                            <div class="player-meta">
-                                <span class="meta-pill">K/D global : <strong>2,53</strong></span>
-                                <span class="meta-pill">Winrate : <strong>71%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Score G</div>
-                        <div class="player-score">943 210</div>
-                        <div class="player-score-bar">
-                            <div class="player-score-fill" style="width: 89%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Succès</div>
-                        <div class="player-achievements">1 095 débloqués</div>
-                        <small>2 198 parties</small>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-region">
-                            Amérique du Sud • <strong>BR</strong>
-                            <small>Console & Cloud</small>
-                        </div>
-                        <div class="player-actions">
-                            <span class="highlight">Suivre</span>
-                            <span>Comparer</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="player-row"
-                         data-rank="7"
-                         data-gamertag="PhoenixRising"
-                         data-score="938560"
-                         data-games="2145"
-                         data-achievements="1087">
-                    <div class="player-rank">7</div>
-
-                    <div class="player-main">
-                        <div class="player-avatar">P</div>
-                        <div class="player-id-block">
-                            <div class="player-tag">PhoenixRising</div>
-                            <div class="player-meta">
-                                <span class="meta-pill">K/D global : <strong>2,32</strong></span>
-                                <span class="meta-pill">Winrate : <strong>70%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Score G</div>
-                        <div class="player-score">938 560</div>
-                        <div class="player-score-bar">
-                            <div class="player-score-fill" style="width: 88%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Succès</div>
-                        <div class="player-achievements">1 087 débloqués</div>
-                        <small>2 145 parties</small>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-region">
-                            Océanie • <strong>AU</strong>
-                            <small>Série X | PC</small>
-                        </div>
-                        <div class="player-actions">
-                            <span class="highlight">Suivre</span>
-                            <span>Comparer</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="player-row"
-                         data-rank="8"
-                         data-gamertag="VortexMaster"
-                         data-score="927890"
-                         data-games="2087"
-                         data-achievements="1063">
-                    <div class="player-rank">8</div>
-
-                    <div class="player-main">
-                        <div class="player-avatar">V</div>
-                        <div class="player-id-block">
-                            <div class="player-tag">VortexMaster</div>
-                            <div class="player-meta">
-                                <span class="meta-pill">K/D global : <strong>2,18</strong></span>
-                                <span class="meta-pill">Winrate : <strong>69%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Score G</div>
-                        <div class="player-score">927 890</div>
-                        <div class="player-score-bar">
-                            <div class="player-score-fill" style="width: 86%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Succès</div>
-                        <div class="player-achievements">1 063 débloqués</div>
-                        <small>2 087 parties</small>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-region">
-                            Europe • <strong>UK</strong>
-                            <small>PC</small>
-                        </div>
-                        <div class="player-actions">
-                            <span class="highlight">Suivre</span>
-                            <span>Comparer</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="player-row"
-                         data-rank="9"
-                         data-gamertag="ApexLegend_X"
-                         data-score="921340"
-                         data-games="2034"
-                         data-achievements="1051">
-                    <div class="player-rank">9</div>
-
-                    <div class="player-main">
-                        <div class="player-avatar">A</div>
-                        <div class="player-id-block">
-                            <div class="player-tag">ApexLegend_X</div>
-                            <div class="player-meta">
-                                <span class="meta-pill">K/D global : <strong>2,76</strong></span>
-                                <span class="meta-pill">Winrate : <strong>68%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Score G</div>
-                        <div class="player-score">921 340</div>
-                        <div class="player-score-bar">
-                            <div class="player-score-fill" style="width: 84%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Succès</div>
-                        <div class="player-achievements">1 051 débloqués</div>
-                        <small>2 034 parties</small>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-region">
-                            Amérique du Nord • <strong>CA</strong>
-                            <small>Série X</small>
-                        </div>
-                        <div class="player-actions">
-                            <span class="highlight">Suivre</span>
-                            <span>Comparer</span>
-                        </div>
-                    </div>
-                </article>
-
-                <article class="player-row"
-                         data-rank="10"
-                         data-gamertag="QuantumGamer"
-                         data-score="915670"
-                         data-games="1987"
-                         data-achievements="1038">
-                    <div class="player-rank">10</div>
-
-                    <div class="player-main">
-                        <div class="player-avatar">Q</div>
-                        <div class="player-id-block">
-                            <div class="player-tag">QuantumGamer</div>
-                            <div class="player-meta">
-                                <span class="meta-pill">K/D global : <strong>2,27</strong></span>
-                                <span class="meta-pill">Winrate : <strong>67%</strong></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Score G</div>
-                        <div class="player-score">915 670</div>
-                        <div class="player-score-bar">
-                            <div class="player-score-fill" style="width: 83%;"></div>
-                        </div>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-column-label">Succès</div>
-                        <div class="player-achievements">1 038 débloqués</div>
-                        <small>1 987 parties</small>
-                    </div>
-
-                    <div class="player-column">
-                        <div class="player-region">
-                            Moyen‑Orient • <strong>AE</strong>
-                            <small>Console</small>
-                        </div>
-                        <div class="player-actions">
-                            <span class="highlight">Suivre</span>
-                            <span>Comparer</span>
-                        </div>
-                    </div>
-                </article>
+                </div>
             </div>
         </div>
-    </section>
 
-    <!-- FOOTER -->
-    <footer>
-        <div>
-            © 2025 • <strong>Xbox Elite 1%</strong> — Expérience UX / UI inspirée des plus beaux dashboards du web.
+        <!-- Call to Actions Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16">
+            <a href="https://monblog-sa-abasse.blogspot.com/" target="_blank" class="group glass-panel p-8 rounded-xl relative overflow-hidden transition-all hover:-translate-y-1 hover:border-xbox-neon/30">
+                <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-50 transition-opacity">
+                    <i data-lucide="cpu" class="w-16 h-16 text-xbox-neon"></i>
+                </div>
+                <h4 class="text-xl font-display font-bold text-white mb-2">Dev Next-Gen</h4>
+                <p class="text-sm text-gray-400 mb-6">Développement assisté par IA, Prompt-to-Code et infrastructures robustes.</p>
+                <div class="flex items-center text-xbox-neon text-sm font-bold uppercase tracking-wider">
+                    Collaborer <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            <a href="https://amzn.to/4ivKTuW" target="_blank" class="group glass-panel p-8 rounded-xl relative overflow-hidden transition-all hover:-translate-y-1 hover:border-blue-500/30">
+                 <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-50 transition-opacity">
+                    <i data-lucide="smartphone" class="w-16 h-16 text-blue-400"></i>
+                </div>
+                <h4 class="text-xl font-display font-bold text-white mb-2">Arsenal Mobile</h4>
+                <p class="text-sm text-gray-400 mb-6">iPhone 16 Pro Max. Puissance de calcul brute pour gérer le leaderboard en déplacement.</p>
+                <div class="flex items-center text-blue-400 text-sm font-bold uppercase tracking-wider">
+                    Upgrade Setup <i data-lucide="external-link" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+            <a href="https://samynantoyabasse-shop.fourthwall.com" target="_blank" class="group glass-panel p-8 rounded-xl relative overflow-hidden transition-all hover:-translate-y-1 hover:border-purple-500/30">
+                 <div class="absolute top-0 right-0 p-4 opacity-20 group-hover:opacity-50 transition-opacity">
+                    <i data-lucide="shirt" class="w-16 h-16 text-purple-400"></i>
+                </div>
+                <h4 class="text-xl font-display font-bold text-white mb-2">Merch Officiel</h4>
+                <p class="text-sm text-gray-400 mb-6">Portez la vision. Vêtements conçus pour les créateurs et l'élite.</p>
+                <div class="flex items-center text-purple-400 text-sm font-bold uppercase tracking-wider">
+                    Voir la collection <i data-lucide="shopping-bag" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
         </div>
-        <div>
-            Données fictives pour démonstration. Design single‑file HTML/CSS/JS, prêt à être hébergé tel quel.
+
+    </main>
+
+    <!-- Player Details Modal (Overlay) -->
+    <div x-show="selectedPlayer" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center px-4">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" @click="closePlayerModal()" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100"
+             x-transition:leave-end="opacity-0"></div>
+
+        <!-- Modal Content -->
+        <div class="relative w-full max-w-2xl glass-panel rounded-2xl overflow-hidden shadow-2xl transform transition-all"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-8 scale-95"
+             x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+             x-transition:leave-end="opacity-0 translate-y-8 scale-95">
+            
+            <button @click="closePlayerModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white z-10">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <template x-if="selectedPlayer">
+                <div>
+                    <!-- Modal Header with Gradient -->
+                    <div class="h-32 bg-gradient-to-r from-xbox-dark to-black relative">
+                        <div class="absolute -bottom-10 left-8">
+                            <div class="w-24 h-24 rounded-full bg-black border-4 border-xbox-neon flex items-center justify-center text-4xl font-display font-bold text-white shadow-lg">
+                                <span x-text="selectedPlayer.gamertag.charAt(0)"></span>
+                            </div>
+                        </div>
+                        <div class="absolute bottom-4 right-4 flex gap-2">
+                             <template x-for="platform in selectedPlayer.platforms">
+                                <span class="px-3 py-1 bg-black/50 backdrop-blur rounded-full text-xs font-bold uppercase border border-white/10" x-text="platform"></span>
+                             </template>
+                        </div>
+                    </div>
+
+                    <!-- Modal Body -->
+                    <div class="pt-14 px-8 pb-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h2 class="text-3xl font-display font-bold text-white" x-text="selectedPlayer.gamertag"></h2>
+                                <div class="flex items-center gap-2 text-gray-400 text-sm mt-1">
+                                    <span x-text="selectedPlayer.team"></span> • <span x-text="selectedPlayer.region"></span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xs text-gray-500 uppercase tracking-widest">Rang</div>
+                                <div class="text-4xl font-display font-bold text-xbox-neon">#<span x-text="selectedPlayer.rank"></span></div>
+                            </div>
+                        </div>
+
+                        <!-- Stats Grid -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                            <div class="bg-white/5 rounded-lg p-3 text-center border border-white/5">
+                                <div class="text-[10px] text-gray-500 uppercase">Score G</div>
+                                <div class="font-bold text-xl text-white" x-text="formatNumber(selectedPlayer.score)"></div>
+                            </div>
+                            <div class="bg-white/5 rounded-lg p-3 text-center border border-white/5">
+                                <div class="text-[10px] text-gray-500 uppercase">Ratio K/D</div>
+                                <div class="font-bold text-xl text-xbox-neon" x-text="selectedPlayer.kd"></div>
+                            </div>
+                            <div class="bg-white/5 rounded-lg p-3 text-center border border-white/5">
+                                <div class="text-[10px] text-gray-500 uppercase">Succès</div>
+                                <div class="font-bold text-xl text-white" x-text="selectedPlayer.achievements"></div>
+                            </div>
+                            <div class="bg-white/5 rounded-lg p-3 text-center border border-white/5">
+                                <div class="text-[10px] text-gray-500 uppercase">Heures</div>
+                                <div class="font-bold text-xl text-white" x-text="formatNumber(selectedPlayer.hours)"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-4">
+                             <button class="flex-1 py-3 bg-xbox-neon text-black font-display font-bold rounded hover:bg-white transition-colors">
+                                AJOUTER AUX AMIS
+                             </button>
+                             <button class="flex-1 py-3 border border-white/20 text-white font-display font-bold rounded hover:bg-white/10 transition-colors">
+                                VOIR PROFIL XBOX
+                             </button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 bg-black/50 backdrop-blur-lg mt-12 py-12">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <div class="font-display font-bold text-lg text-white mb-1">XBOX ELITE <span class="text-xbox-neon">1%</span></div>
+                <p class="text-xs text-gray-500">© 2025 SAMYN-ANTOY. Performance Quantified.</p>
+            </div>
+            <div class="flex gap-6">
+                <!-- Functional Social Links (To Blog for now) -->
+                <a href="https://monblog-sa-abasse.blogspot.com/" target="_blank" class="text-gray-500 hover:text-xbox-neon transition-colors transform hover:scale-110"><i data-lucide="github" class="w-5 h-5"></i></a>
+                <a href="https://monblog-sa-abasse.blogspot.com/" target="_blank" class="text-gray-500 hover:text-blue-400 transition-colors transform hover:scale-110"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                <a href="https://monblog-sa-abasse.blogspot.com/" target="_blank" class="text-gray-500 hover:text-pink-500 transition-colors transform hover:scale-110"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+            </div>
         </div>
     </footer>
-</div>
 
-<script>
-    // Scroll doux
-    document.querySelectorAll("[data-scroll]").forEach(el => {
-        el.addEventListener("click", () => {
-            const target = document.querySelector(el.getAttribute("data-scroll"));
-            if (!target) return;
-            window.scrollTo({
-                top: target.getBoundingClientRect().top + window.scrollY - 80,
-                behavior: "smooth"
-            });
-        });
-    });
-
-    // Filtre recherche gamertag
-    const searchInput = document.getElementById("searchInput");
-    const playerRows = Array.from(document.querySelectorAll(".player-row"));
-
-    function filterPlayers() {
-        const term = searchInput.value.trim().toLowerCase();
-        playerRows.forEach(row => {
-            const tag = row.dataset.gamertag.toLowerCase();
-            const matches = term === "" || tag.includes(term);
-            row.style.display = matches ? "grid" : "none";
-            row.classList.toggle("fade-out", term !== "" && !matches);
-        });
-    }
-
-    searchInput.addEventListener("input", filterPlayers);
-
-    // Tri
-    const sortSelect = document.getElementById("sortSelect");
-    sortSelect.addEventListener("change", () => {
-        const mode = sortSelect.value;
-        const container = playerRows[0].parentElement;
-        const visibleRows = playerRows.slice().filter(row => row.style.display !== "none");
-
-        visibleRows.sort((a, b) => {
-            const get = (row, key) => parseInt(row.dataset[key], 10) || 0;
-            if (mode === "rank") return get(a, "rank") - get(b, "rank");
-            if (mode === "score") return get(b, "score") - get(a, "score");
-            if (mode === "games") return get(b, "games") - get(a, "games");
-            if (mode === "achievements") return get(b, "achievements") - get(a, "achievements");
-            return 0;
-        });
-
-        visibleRows.forEach(row => container.appendChild(row));
-    });
-
-    // Thème (simple switch visuel – tu peux le brancher à des classes si tu veux aller plus loin)
-    const themeToggle = document.getElementById("themeToggle");
-    themeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("theme-alt");
-        themeToggle.querySelector("span").textContent =
-            document.body.classList.contains("theme-alt") ? "Mode studio" : "Mode pro";
-    });
-</script>
+    <!-- Initialisation des icônes après le chargement du DOM -->
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
 </html>
